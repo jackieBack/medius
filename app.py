@@ -51,7 +51,7 @@ def display_photo(photo_id, search_query):
   st.image(photo_image_url, width=500, caption=search_query)
 
   # Display the attribution text
-  st.write(f'Photo on <a target="_blank" href="https://unsplash.com/photos/{photo_id}">Unsplash</a> ')
+  # st.write(f'Photo on <a target="_blank" href="https://unsplash.com/photos/{photo_id}">Unsplash</a> ')
   
 def search_unslash(search_query, photo_features, photo_ids, results_count=3):
   # Encode the search query
