@@ -106,7 +106,6 @@ def main():
             # image_urls = get_images_for_text(user_input)
             summaries = get_summary_for_text(user_input, summary_type_enum)
             for summary in summaries:
-               st.write(summary)
                search_unslash(summary, photo_features, photo_ids, results_count=1)
 
         st.write("### Associated Images")
