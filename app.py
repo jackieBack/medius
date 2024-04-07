@@ -43,12 +43,12 @@ def find_best_matches(text_features, photo_features, photo_ids, results_count=3)
   # Return the photo IDs of the best matches
   return [photo_ids[i] for i in best_photo_idx[:results_count]]
 
-def display_photo(photo_id):
+def display_photo(photo_id, search_query):
   # Get the URL of the photo resized to have a width of 320px
   photo_image_url = f"https://unsplash.com/photos/{photo_id}/download?w=320"
 
   # Display the photo
-  st.image(url=photo_image_url, width=500)
+  st.image(photo_image_url, width=500, caption=search_query)
 
   # Display the attribution text
   st.write(f'Photo on <a target="_blank" href="https://unsplash.com/photos/{photo_id}">Unsplash</a> ')
@@ -62,7 +62,7 @@ def search_unslash(search_query, photo_features, photo_ids, results_count=3):
 
   # Display the best photos
   for photo_id in best_photo_ids:
-    display_photo(photo_id)
+    display_photo(photo_id ,search_query)
 
 def paragraph_to_array(text):
     doc = nlp(text)
