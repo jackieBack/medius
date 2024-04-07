@@ -86,21 +86,6 @@ def get_summary_for_text(text, summary_option):
         result = tokenizer.decode(output[0])
     return paragraph_to_array(result)
 
-
-def get_images_for_text(text):
-    """
-    Placeholder function to get images for the given text.
-    Replace this function with your actual logic to generate or fetch images.
-    """
-    import time
-
-    time.sleep(2)
-
-    # Example: Return a list of image URLs based on the input text
-    # This is just a placeholder. Replace it with your own logic.
-    return ["https://example.com/image1.jpg", "https://example.com/image2.jpg"]
-
-
 def main():
     st.title("Text to Image Showcase")
 
@@ -121,7 +106,8 @@ def main():
             # image_urls = get_images_for_text(user_input)
             summaries = get_summary_for_text(user_input, summary_type_enum)
             for summary in summaries:
-                st.write(summary)
+               st.write(summary)
+               search_unslash(summary, photo_features, photo_ids, results_count=1)
 
         st.write("### Associated Images")
         # for url in image_urls:
