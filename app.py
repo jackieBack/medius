@@ -1,6 +1,4 @@
 from enum import Enum
-
-import spacy
 import streamlit as st
 
 # from summarizer import Summarizer
@@ -8,9 +6,11 @@ from summarizer.sbert import SBertSummarizer
 
 # import torch
 from transformers import AutoModelWithLMHead, AutoTokenizer
+import spacy
+import clip
 
-# model_extractive_summary_1 = Summarizer()
 nlp = spacy.load("en_core_web_sm") # Load the English model
+image_search_model = clip.load("ViT-B/32")
 
 class SummaryType(Enum):
     EXTRACTIVE = 1
@@ -22,7 +22,7 @@ def paragraph_to_array(text):
     return sentences[:-1]
 
 def get_summary_for_text(text, summary_option):
-    if summary_option is SummaryType.ABSTRACTIVE:
+    if summary_option is SummaryType.EXTRACTIVE:
         model_extractive_summary = SBertSummarizer("paraphrase-MiniLM-L6-v2")
         result = model_extractive_summary(text, num_sentences=6)
     else:
@@ -34,7 +34,8 @@ def get_summary_for_text(text, summary_option):
         inputs = tokenizer.encode(
             "sumarize: " + text, return_tensors="pt", truncation=True
         )
-        result = model_abstractive_summary.generate(inputs)
+        output = model_abstractive_summary.generate(inputs, min_length=150, max_length=250)
+        result = tokenizer.decode(output[0])
     return paragraph_to_array(result)
 
 
