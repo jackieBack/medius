@@ -67,8 +67,8 @@ def search_unslash(search_query, photo_features, photo_ids, results_count=3):
     display_photo(photo_id ,search_query)
 
 def paragraph_to_array(text):
-    doc = nlp(text)
-    sentences = [sent.text for sent in doc.sents]
+    sentences = nlp(text)
+    # sentences = [sent.text for sent in doc.sents]
     return sentences[:-1]
 
 def get_summary_for_text(text, summary_option):
