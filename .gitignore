@@ -1,3 +1,4 @@
 medius/
 .venv
 Lib/
+.trunk/
