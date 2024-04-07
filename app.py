@@ -8,13 +8,61 @@ from summarizer.sbert import SBertSummarizer
 from transformers import AutoModelWithLMHead, AutoTokenizer
 import spacy
 import clip
+import pandas as pd
+import numpy as np
+import torch
 
+device = 'cpu'
 nlp = spacy.load("en_core_web_sm") # Load the English model
 image_search_model = clip.load("ViT-B/32")
+photo_ids = pd.read_csv("photo_ids.csv")
+photo_ids = list(photo_ids['photo_id'])
+photo_features = np.load("features.npy")
+photo_features = torch.from_numpy(photo_features).float().to(device)
 
 class SummaryType(Enum):
     EXTRACTIVE = 1
     ABSTRACTIVE = 2
+
+def encode_search_query(search_query):
+  with torch.no_grad():
+    # Encode and normalize the search query using CLIP
+    text_encoded = image_search_model.encode_text(clip.tokenize(search_query).to(device))
+    text_encoded /= text_encoded.norm(dim=-1, keepdim=True)
+
+  # Retrieve the feature vector
+  return text_encoded
+
+def find_best_matches(text_features, photo_features, photo_ids, results_count=3):
+  # Compute the similarity between the search query and each photo using the Cosine similarity
+  similarities = (photo_features @ text_features.T).squeeze(1)
+
+  # Sort the photos by their similarity score
+  best_photo_idx = (-similarities).argsort()
+
+  # Return the photo IDs of the best matches
+  return [photo_ids[i] for i in best_photo_idx[:results_count]]
+
+def display_photo(photo_id):
+  # Get the URL of the photo resized to have a width of 320px
+  photo_image_url = f"https://unsplash.com/photos/{photo_id}/download?w=320"
+
+  # Display the photo
+  st.image(url=photo_image_url, width=500)
+
+  # Display the attribution text
+  st.write(f'Photo on <a target="_blank" href="https://unsplash.com/photos/{photo_id}">Unsplash</a> ')
+  
+def search_unslash(search_query, photo_features, photo_ids, results_count=3):
+  # Encode the search query
+  text_features = encode_search_query(search_query)
+
+  # Find the best matches
+  best_photo_ids = find_best_matches(text_features, photo_features, photo_ids, results_count)
+
+  # Display the best photos
+  for photo_id in best_photo_ids:
+    display_photo(photo_id)
 
 def paragraph_to_array(text):
     doc = nlp(text)
