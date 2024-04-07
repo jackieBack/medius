@@ -6,7 +6,6 @@ from summarizer.sbert import SBertSummarizer
 
 # import torch
 from transformers import AutoModelWithLMHead, AutoTokenizer
-import spacy
 import clip
 import pandas as pd
 import numpy as np
