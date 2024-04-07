@@ -5,7 +5,6 @@ import streamlit as st
 from summarizer.sbert import SBertSummarizer
 
 # import torch
-from transformers import AutoModelWithLMHead, AutoTokenizer
 import clip
 import pandas as pd
 import numpy as np
@@ -94,13 +93,13 @@ def main():
     # Text input from the user
     user_input = st.text_area("Paste your text here:", height=150)
     # Radio buttons for summary type selection
-    summary_type = st.radio(
-        "Choose summary type:", ("Abstractive Summary", "Extractive Summary")
-    )
-    if summary_type == "Abstractive Summary":
-        summary_type_enum = SummaryType.ABSTRACTIVE
-    else:
-        summary_type_enum = SummaryType.EXTRACTIVE
+    # summary_type = st.radio(
+    #     "Choose summary type:", ("Abstractive Summary", "Extractive Summary")
+    # )
+    # if summary_type == "Abstractive Summary":
+    #     summary_type_enum = SummaryType.ABSTRACTIVE
+    # else:
+    summary_type_enum = SummaryType.EXTRACTIVE
 
     if user_input:
 
