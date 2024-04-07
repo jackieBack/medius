@@ -11,14 +11,17 @@ import clip
 import pandas as pd
 import numpy as np
 import torch
+import nltk
+from nltk.tokenize import sent_tokenize as nlp
 
 device = 'cpu'
-nlp = spacy.load("en_core_web_sm") # Load the English model
+# nlp = spacy.load("en_core_web_sm") # Load the English model
 image_search_model, _ = clip.load("ViT-B/32")
 photo_ids = pd.read_csv("photo_ids.csv")
 photo_ids = list(photo_ids['photo_id'])
 photo_features = np.load("features.npy")
 photo_features = torch.from_numpy(photo_features).float().to(device)
+nltk.download('punkt')  # You need to download the Punkt tokenizer models the first time
 
 class SummaryType(Enum):
     EXTRACTIVE = 1
