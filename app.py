@@ -14,7 +14,7 @@ import torch
 
 device = 'cpu'
 nlp = spacy.load("en_core_web_sm") # Load the English model
-image_search_model = clip.load("ViT-B/32")
+image_search_model, _ = clip.load("ViT-B/32")
 photo_ids = pd.read_csv("photo_ids.csv")
 photo_ids = list(photo_ids['photo_id'])
 photo_features = np.load("features.npy")
